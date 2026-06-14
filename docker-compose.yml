@@ -1,5 +1,4 @@
 services:
-  
   app:
     build: .
     container_name: ${CONTAINER_NAME_APP}
@@ -16,13 +15,11 @@ services:
         oracle:
           condition: service_healthy
     networks:
-      - app_network
+      - ecommerce_network
 
-  nginx:
-    
   oracle:
     image: container-registry.oracle.com/database/free:latest
-    container_name: ${CONTAINER_NAME}
+    container_name: ${CONTAINER_DB_NAME}
     restart: unless-stopped
     env_file: 
       - .env
@@ -31,15 +28,20 @@ services:
       - "${ORACLE_DB_PORT}:1521"
 
     volumes:
-      - /lab/docker/oracle/oradata:/opt/oracle/oradata 
-      - /lab/docker/oracle/diag:/opt/oracle/diag 
-      - /lab/docker/oracle/dbs:/opt/oracle/dbs
+      - ~/lab/docker/oracle/oradata:/opt/oracle/oradata 
+      - ~/lab/docker/oracle/diag:/opt/oracle/diag 
+      - ~/lab/docker/oracle/dbs:/opt/oracle/dbs
     
     networks:
-      - oracle_network
+      - ecommerce_network
 
     healthcheck:
-      test: ["CMD", "ls"]
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/${ORACLE_PASSWORD}@localhost:1521/${ORACLE_DB} || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
+      start_period: 120s
+
+networks:
+  ecommerce_network:
+    driver: bridge
