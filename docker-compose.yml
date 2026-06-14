@@ -30,6 +30,15 @@ services:
     networks:
       - ecommerce_network
 
+  redis:
+    image: redis:alpine
+    container_name: ${CONTAINER_REDIS_NAME}
+    restart: unless-stopped
+    ports:
+      - ${REDIS_PORT}:6379
+    networks:
+      - ecommerce_network
+
   oracle:
     image: container-registry.oracle.com/database/free:latest
     container_name: ${CONTAINER_DB_NAME}
