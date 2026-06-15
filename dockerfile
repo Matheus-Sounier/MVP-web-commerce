@@ -1,4 +1,4 @@
-FROM python:3.15.0a8-slim
+FROM python:3.11-slim
 
 RUN addgroup app && adduser -S -G app app
 
