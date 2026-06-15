@@ -1,4 +1,4 @@
-Django>=4.2,<5.0
+django>=4.2,<5.0
 oracledb>=2.0
 
 gunicorn
