@@ -15,4 +15,4 @@ COPY . .
 
 USER app
 
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "flux_store.wsgi:application", "--bind", "0.0.0.0:8000"]
